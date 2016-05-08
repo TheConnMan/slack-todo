@@ -10,12 +10,21 @@ var HELP_TEXT = [
   "/todo add [task] - Add a task to your todo list",
   "/todo complete [task number] - Complete the task with the given number"
 ].join('\n');
+var TASK_LIST_PREFIX = "Your unfinished tasks:\n";
 
 module.exports = {
-  listUserTasks: function(userId) {
+  listUserTasks: function(userId, done) {
     return Task.find({
-      done: false,
+      done: done,
       user: userId
+    });
+  },
+
+  listUnfinishedTasks: function(userId) {
+    return this.listUserTasks(userId, false).then(function(tasks) {
+      return TASK_LIST_PREFIX + tasks.map(function(task, index) {
+        return (index + 1) + ". " + task.text;
+      }).join('\n');
     });
   },
 
@@ -28,13 +37,15 @@ module.exports = {
   },
 
   completeTask: function(taskIndex, userId) {
-    return this.listUserTasks(userId).then(function(tasks, err) {
+    return this.listUserTasks(userId, false).then(function(tasks, err) {
       if (taskIndex >= tasks.length) {
         throw "No available task by that index";
       }
       var task = tasks[taskIndex];
       task.done = true;
-      return task.save();
+      return task.save().then(function() {
+        return task;
+      });
     });
   },
 

@@ -16,17 +16,16 @@ module.exports = {
             var text = req.body.text.split(' ');
             var command = text.shift();
             if (command == 'list') {
-              var tasks = TaskService.listUserTasks(userId);
-              tasks.exec(function(err, data) {
-                return res.send(data);
+              TaskService.listUnfinishedTasks(userId).then(function(message) {
+                return res.send(message);
               });
             } else if (command == "add") {
-              TaskService.addTask(text.join(' '), userId, team).exec(function(err, task) {
-                res.send("Successfully added your task!");
+              TaskService.addTask(text.join(' '), userId, team).then(function(task) {
+                res.send("Successfully added \"" + task.text + "\" to your todo list!");
               });
             } else if (command == "complete") {
-              TaskService.completeTask(parseInt(text[0]) - 1, userId).then(function(err) {
-                res.send("Successfully marked your task as complete!");
+              TaskService.completeTask(parseInt(text[0]) - 1, userId).then(function(task) {
+                res.send("Marked \"" + task.text + "\" as complete!");
               }).catch(function(e) {
                 res.send(e);
               });
