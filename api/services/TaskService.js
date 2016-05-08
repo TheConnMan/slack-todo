@@ -6,10 +6,12 @@
  */
 
 var HELP_TEXT = [
+  "Todo - You're friendly todo list",
   "/todo list - List all your unfinished tasks",
   "/todo add [task] - Add a task to your todo list",
   "/todo complete [task number] - Complete the task with the given number"
 ].join('\n');
+var NO_TASKS = "You've completed all your tasks!";
 var TASK_LIST_PREFIX = "Your unfinished tasks:\n";
 
 module.exports = {
@@ -22,6 +24,9 @@ module.exports = {
 
   listUnfinishedTasks: function(userId) {
     return this.listUserTasks(userId, false).then(function(tasks) {
+      if (tasks.length === 0) {
+        return NO_TASKS;
+      }
       return TASK_LIST_PREFIX + tasks.map(function(task, index) {
         return (index + 1) + ". " + task.text;
       }).join('\n');
