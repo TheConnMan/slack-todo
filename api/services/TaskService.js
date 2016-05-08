@@ -16,6 +16,15 @@ module.exports = {
       user: userId
     });
   },
+
+  addTask: function(text, userId, team) {
+    return Task.create({
+      text: text,
+      user: userId,
+      team: team
+    });
+  },
+
   showHelp: function() {
     return HELP_TEXT;
   }
