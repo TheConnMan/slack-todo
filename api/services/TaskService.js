@@ -6,7 +6,9 @@
  */
 
 var HELP_TEXT = [
-  "/todo list - List all your unfinished tasks"
+  "/todo list - List all your unfinished tasks",
+  "/todo add [task] - Add a task to your todo list",
+  "/todo complete [task number] - Complete the task with the given number"
 ].join('\n');
 
 module.exports = {
