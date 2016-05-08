@@ -8,6 +8,11 @@
 module.exports = {
 
   attributes: {
+    done: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
     text: {
       type: 'string',
       required: true
