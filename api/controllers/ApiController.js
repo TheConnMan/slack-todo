@@ -29,6 +29,10 @@ module.exports = {
               }).catch(function(e) {
                 res.send(e);
               });
+            } else if (command == "finished") {
+              TaskService.listFinishedTasks(userId, parseInt(text[0])).then(function(message) {
+                return res.send(message);
+              });
             } else {
               return res.send(TaskService.showHelp());
             }
