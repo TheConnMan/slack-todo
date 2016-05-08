@@ -25,6 +25,17 @@ module.exports = {
     });
   },
 
+  completeTask: function(taskIndex, userId) {
+    return this.listUserTasks(userId).then(function(tasks, err) {
+      if (taskIndex >= tasks.length) {
+        throw "No available task by that index";
+      }
+      var task = tasks[taskIndex];
+      task.done = true;
+      return task.save();
+    });
+  },
+
   showHelp: function() {
     return HELP_TEXT;
   }

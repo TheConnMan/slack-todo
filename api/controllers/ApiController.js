@@ -24,6 +24,12 @@ module.exports = {
               TaskService.addTask(text.join(' '), userId, team).exec(function(err, task) {
                 res.send("Successfully added your task!");
               });
+            } else if (command == "complete") {
+              TaskService.completeTask(parseInt(text[0]) - 1, userId).then(function(err) {
+                res.send("Successfully marked your task as complete!");
+              }).catch(function(e) {
+                res.send(e);
+              });
             } else {
               return res.send(TaskService.showHelp());
             }
